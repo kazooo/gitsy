@@ -58,8 +58,6 @@ tasks.named<BootBuildImage>("bootBuildImage") {
         /* options for remote application debugging */
         "JAVA_TOOL_OPTIONS" to "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n"
     )
-    /* run detekt before building production ready image */
-    dependsOn("detektMain", "detektTest")
 }
 
 tasks.withType<KotlinCompile> {
