@@ -1,10 +1,10 @@
-package com.productboard.gitsy.core.service.impl
+package com.productboard.gitsy.core.api.impl
 
 import com.productboard.gitsy.core.GithubApiEndpoint
+import com.productboard.gitsy.core.api.GithubClient
 import com.productboard.gitsy.core.buildApiUri
-import com.productboard.gitsy.core.domain.organization.GithubOrganizationDto
-import com.productboard.gitsy.core.domain.repository.GithubRepositoryDto
-import com.productboard.gitsy.core.service.GithubClient
+import com.productboard.gitsy.core.domain.organization.GithubOrganizationResponseDto
+import com.productboard.gitsy.core.domain.repository.GithubRepositoryResponseDto
 import mu.KotlinLogging
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
@@ -28,7 +28,7 @@ class GithubClientImpl(
     private val restTemplate: RestTemplate,
 ) : GithubClient {
 
-    override fun getOrganization(organizationName: String): GithubOrganizationDto? {
+    override fun getOrganization(organizationName: String): GithubOrganizationResponseDto? {
         require(organizationName.isNotBlank()) { "|organizationName| can't be blank" }
         logger.trace { "Getting information about $organizationName organization..." }
 
@@ -40,7 +40,7 @@ class GithubClientImpl(
         logger.trace { "Prepared request URI: $uri" }
 
         /* request GitHub for required information */
-        val response = getForEntity(uri, GithubOrganizationDto::class.java)
+        val response = getForEntity(uri, GithubOrganizationResponseDto::class.java)
         if (response.statusCode != HttpStatus.OK) {
             logger.trace { "GitHub API returned status code ${response.statusCode}, something went wrong!" }
         }
@@ -48,7 +48,7 @@ class GithubClientImpl(
         return response.body
     }
 
-    override fun getOrganizationRepositories(organizationName: String): List<GithubRepositoryDto> {
+    override fun getOrganizationRepositories(organizationName: String): List<GithubRepositoryResponseDto> {
         require(organizationName.isNotBlank()) { "|organizationName| can't be blank" }
         logger.trace { "Getting list of repositories $organizationName organization owns..." }
 
@@ -60,7 +60,7 @@ class GithubClientImpl(
         logger.trace { "Prepared request URI: $uri" }
 
         /* request GitHub for required information */
-        val response = getForEntities(uri, object : ParameterizedTypeReference<List<GithubRepositoryDto>>() {})
+        val response = getForEntities(uri, object : ParameterizedTypeReference<List<GithubRepositoryResponseDto>>() {})
         if (response.statusCode != HttpStatus.OK) {
             logger.trace { "GitHub API returned status code ${response.statusCode}, something went wrong!" }
         }
@@ -68,7 +68,7 @@ class GithubClientImpl(
         return response.body.orEmpty()
     }
 
-    override fun getRepository(repositoryOwner: String, repositoryName: String): GithubRepositoryDto? {
+    override fun getRepository(repositoryOwner: String, repositoryName: String): GithubRepositoryResponseDto? {
         require(repositoryOwner.isNotBlank()) { "|repositoryOwner| can't be blank" }
         require(repositoryName.isNotBlank()) { "|repositoryName| can't be blank" }
         logger.trace {
@@ -86,7 +86,7 @@ class GithubClientImpl(
         logger.trace { "Prepared request URI: $uri" }
 
         /* request GitHub for required information */
-        val response = getForEntity(uri, GithubRepositoryDto::class.java)
+        val response = getForEntity(uri, GithubRepositoryResponseDto::class.java)
         if (response.statusCode != HttpStatus.OK) {
             logger.trace { "GitHub API returned status code ${response.statusCode}, something went wrong!" }
         }

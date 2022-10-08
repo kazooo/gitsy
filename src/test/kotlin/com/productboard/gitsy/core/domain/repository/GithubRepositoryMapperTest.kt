@@ -46,4 +46,15 @@ class GithubRepositoryMapperTest {
 
         assertEquals(expected, obj.toDto())
     }
+
+    @Test
+    fun successfullyMapRepositoryResponseDtoToInternalDto() {
+        val expected = GithubRepositoryDto(
+            name = GithubRepositoryMapperTestConstants.REPOSITORY_NAME,
+        )
+
+        val obj = GithubRepositoryResponseDto(name = GithubRepositoryMapperTestConstants.REPOSITORY_NAME)
+
+        assertEquals(expected, obj.toDto())
+    }
 }

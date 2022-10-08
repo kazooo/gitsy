@@ -26,13 +26,28 @@ class GithubOrganizationMapperTest {
     }
 
     @Test
-    fun successfullyMapOrganizationEntityToDto() {
+    fun successfullyMapOrganizationInternalDtoToEntity() {
         val expected = GithubOrganizationDto(
             name = GithubOrganizationMapperTestConstants.ORGANIZATION_NAME,
             publicRepos = GithubOrganizationMapperTestConstants.ORG_PUBLIC_REPOS,
         )
 
         val obj = GithubOrganizationEntity(
+            name = GithubOrganizationMapperTestConstants.ORGANIZATION_NAME,
+            publicRepos = GithubOrganizationMapperTestConstants.ORG_PUBLIC_REPOS,
+        )
+
+        assertEquals(expected, obj.toDto())
+    }
+
+    @Test
+    fun successfullyMapOrganizationResponseDtoToInternalDto() {
+        val expected = GithubOrganizationDto(
+            name = GithubOrganizationMapperTestConstants.ORGANIZATION_NAME,
+            publicRepos = GithubOrganizationMapperTestConstants.ORG_PUBLIC_REPOS,
+        )
+
+        val obj = GithubOrganizationResponseDto(
             name = GithubOrganizationMapperTestConstants.ORGANIZATION_NAME,
             publicRepos = GithubOrganizationMapperTestConstants.ORG_PUBLIC_REPOS,
         )

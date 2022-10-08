@@ -1,7 +1,7 @@
-package com.productboard.gitsy.core.service
+package com.productboard.gitsy.core.api
 
-import com.productboard.gitsy.core.domain.organization.GithubOrganizationDto
-import com.productboard.gitsy.core.domain.repository.GithubRepositoryDto
+import com.productboard.gitsy.core.domain.organization.GithubOrganizationResponseDto
+import com.productboard.gitsy.core.domain.repository.GithubRepositoryResponseDto
 
 /**
  * REST API client for GitHub REST API.
@@ -17,7 +17,7 @@ interface GithubClient {
      * @param organizationName name of GitHub organization
      * @return GitHub's organization DTO or null if the organization wasn't found
      */
-    fun getOrganization(organizationName: String): GithubOrganizationDto?
+    fun getOrganization(organizationName: String): GithubOrganizationResponseDto?
 
     /**
      * Requests GitHub for a list of repositories the given organization owns.
@@ -25,7 +25,7 @@ interface GithubClient {
      * @param organizationName name of GitHub organization
      * @return list of GitHub repository DTOs
      */
-    fun getOrganizationRepositories(organizationName: String): List<GithubRepositoryDto>
+    fun getOrganizationRepositories(organizationName: String): List<GithubRepositoryResponseDto>
 
     /**
      * Requests GitHub for information about repository with the provided name.
@@ -34,7 +34,7 @@ interface GithubClient {
      * @param repositoryName   name of GitHub repository
      * @return GitHub's repository DTO or null if the repository wasn't found
      */
-    fun getRepository(repositoryOwner: String, repositoryName: String): GithubRepositoryDto?
+    fun getRepository(repositoryOwner: String, repositoryName: String): GithubRepositoryResponseDto?
 
     /**
      * Requests GitHub for information about languages the given repository contains.

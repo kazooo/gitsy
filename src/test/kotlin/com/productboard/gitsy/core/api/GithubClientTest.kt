@@ -1,10 +1,10 @@
-package com.productboard.gitsy.core.service
+package com.productboard.gitsy.core.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.productboard.gitsy.core.GithubApiEndpoint
 import com.productboard.gitsy.core.buildApiUri
-import com.productboard.gitsy.core.domain.organization.GithubOrganizationDto
-import com.productboard.gitsy.core.domain.repository.GithubRepositoryDto
+import com.productboard.gitsy.core.domain.organization.GithubOrganizationResponseDto
+import com.productboard.gitsy.core.domain.repository.GithubRepositoryResponseDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -51,7 +51,7 @@ class GithubClientTest(
             relativeUrl = GithubApiEndpoint.GET_ORGANIZATION,
             uriVariables = mapOf("organization" to GithubClientTestConstants.ORGANIZATION),
         )
-        val expected = GithubOrganizationDto(
+        val expected = GithubOrganizationResponseDto(
             name = GithubClientTestConstants.ORGANIZATION,
             publicRepos = GithubClientTestConstants.ORGANIZATION_REPOS,
         )
@@ -74,9 +74,9 @@ class GithubClientTest(
             uriVariables = mapOf("organization" to GithubClientTestConstants.ORGANIZATION),
         )
         val expected = listOf(
-            GithubRepositoryDto(name = GithubClientTestConstants.REPOSITORY_NAME),
-            GithubRepositoryDto(name = GithubClientTestConstants.REPOSITORY_NAME),
-            GithubRepositoryDto(name = GithubClientTestConstants.REPOSITORY_NAME),
+            GithubRepositoryResponseDto(name = GithubClientTestConstants.REPOSITORY_NAME),
+            GithubRepositoryResponseDto(name = GithubClientTestConstants.REPOSITORY_NAME),
+            GithubRepositoryResponseDto(name = GithubClientTestConstants.REPOSITORY_NAME),
         )
 
         server
@@ -99,7 +99,7 @@ class GithubClientTest(
                 "repository" to GithubClientTestConstants.REPOSITORY_NAME,
             )
         )
-        val expected = GithubRepositoryDto(name = GithubClientTestConstants.REPOSITORY_NAME)
+        val expected = GithubRepositoryResponseDto(name = GithubClientTestConstants.REPOSITORY_NAME)
 
         server
             .expect(requestTo(uri.toString()))
