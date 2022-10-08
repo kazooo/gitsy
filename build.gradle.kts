@@ -6,6 +6,7 @@ plugins {
     id("org.springframework.boot") version "2.7.4"
     id("io.spring.dependency-management") version "1.0.14.RELEASE"
     id("io.gitlab.arturbosch.detekt") version "1.22.0-RC1"
+    id("org.jetbrains.kotlinx.kover") version "0.4.2"
 
     kotlin("jvm") version "1.7.20"
     kotlin("plugin.spring") version "1.6.21"
@@ -23,9 +24,15 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-joda")
+
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.0")
+
     implementation("org.liquibase:liquibase-core")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -34,6 +41,8 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0-RC1")
 }
 
 springBoot {
@@ -41,8 +50,9 @@ springBoot {
 }
 
 tasks.named<BootBuildImage>("bootBuildImage") {
-    /* create Docker images with tags "latest" and the current version */
+    /* create Docker images with tags "latest" */
     imageName = project.name
+    /* also create with a tag of the current application version */
     tags = listOf("${project.name}:$version")
     environment = mapOf(
         /* options for remote application debugging */
