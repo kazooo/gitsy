@@ -42,6 +42,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.mockk:mockk:1.13.2")
     testImplementation("com.h2database:h2:2.1.214")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0-RC1")

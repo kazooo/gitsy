@@ -29,6 +29,24 @@ class AppEnvironment {
     val githubApiBaseUrl: String = "api.github.com"
 
     /**
+     * List of GitHub organizations to periodically synchronize.
+     */
+    @Value("\${gitsy.synchronizeOrganizations}")
+    val synchronizeOrganizations: List<String> = emptyList()
+
+    /**
+     * Flag indicating if the application can synchronize configured organizations.
+     */
+    @Value("\${gitsy.synchronizationEnabled}")
+    val synchronizationEnabled: Boolean = false
+
+    /**
+     * Synchronization cron.
+     */
+    @Value("\${gitsy.organizationSyncCron}")
+    val syncCron: String = "0 0 12 1 * *"
+
+    /**
      * Logs all configured environment variables of the application.
      */
     @PostConstruct
@@ -36,5 +54,8 @@ class AppEnvironment {
         logger.info { "Application started with following environment variables:" }
         logger.info { "GitHub REST API base URL scheme: $githubApiBaseUrlScheme" }
         logger.info { "GitHub REST API base URL: $githubApiBaseUrl" }
+        logger.info { "Synchronization enabled: $synchronizationEnabled" }
+        logger.info { "Organizations to synchronize: $synchronizeOrganizations" }
+        logger.info { "Synchronization cron: $syncCron" }
     }
 }

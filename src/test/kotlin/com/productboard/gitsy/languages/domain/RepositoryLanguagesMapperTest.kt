@@ -2,11 +2,12 @@ package com.productboard.gitsy.languages.domain
 
 import com.productboard.gitsy.core.domain.organization.GithubOrganizationEntity
 import com.productboard.gitsy.core.domain.repository.GithubRepositoryEntity
-import com.productboard.gitsy.language.domain.RepositoryLanguagesDto
-import com.productboard.gitsy.language.domain.RepositoryLanguagesEntity
-import com.productboard.gitsy.language.domain.toDto
-import com.productboard.gitsy.language.domain.toEntity
-import com.productboard.gitsy.language.domain.toRepositoryLanguagesDto
+import com.productboard.gitsy.core.domain.repository.toDto
+import com.productboard.gitsy.language.domain.original.RepositoryLanguagesDto
+import com.productboard.gitsy.language.domain.original.RepositoryLanguagesEntity
+import com.productboard.gitsy.language.domain.original.toDto
+import com.productboard.gitsy.language.domain.original.toEntity
+import com.productboard.gitsy.language.domain.original.toRepositoryLanguagesDto
 import org.joda.time.Instant
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -26,21 +27,23 @@ class RepositoryLanguagesMapperTest {
     @Test
     fun successfullyMapEntityToDto() {
         val timestamp = Instant.now()
+        val repositoryEntity = GithubRepositoryEntity(
+            name = RepositoryLanguagesMapperTestConstants.REPOSITORY_NAME,
+            organization = GithubOrganizationEntity(
+                name = RepositoryLanguagesMapperTestConstants.ORGANIZATION_NAME,
+                publicRepos = RepositoryLanguagesMapperTestConstants.ORG_PUBLIC_REPOS,
+            )
+        )
 
         val expected = RepositoryLanguagesDto(
             languageMap = RepositoryLanguagesMapperTestConstants.LANGUAGES,
+            repository = repositoryEntity.toDto(),
             createdOn = timestamp,
         )
 
         val obj = RepositoryLanguagesEntity(
             languageMap = RepositoryLanguagesMapperTestConstants.LANGUAGES,
-            repository = GithubRepositoryEntity(
-                name = RepositoryLanguagesMapperTestConstants.REPOSITORY_NAME,
-                organization = GithubOrganizationEntity(
-                    name = RepositoryLanguagesMapperTestConstants.ORGANIZATION_NAME,
-                    publicRepos = RepositoryLanguagesMapperTestConstants.ORG_PUBLIC_REPOS,
-                )
-            ),
+            repository = repositoryEntity,
             createdOn = timestamp,
         )
 

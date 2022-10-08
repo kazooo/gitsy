@@ -28,29 +28,30 @@ class GithubCoreRepositoryTest(
 
     @Test
     fun successfullySaveToRepository() {
-        val entity = GithubOrganizationEntity(
+        val organizationEntity = GithubOrganizationEntity(
             name = GithubOrganizationRepositoryTestConstants.ORGANIZATION_NAME,
             publicRepos = GithubOrganizationRepositoryTestConstants.ORGANIZATION_REPOS,
         )
-        entity.repositories = listOf(
+        organizationEntity.repositories = listOf(
             GithubRepositoryEntity(
                 name = GithubOrganizationRepositoryTestConstants.REPOSITORY_NAME,
-                organization = entity,
+                organization = organizationEntity,
             )
         )
 
-        organizationRepository.save(entity)
+        organizationRepository.save(organizationEntity)
 
-        val persisted = organizationRepository.findByName(
+        val persistedOrganization = organizationRepository.findByName(
             GithubOrganizationRepositoryTestConstants.ORGANIZATION_NAME
         )
 
-        assertThat(persisted).isNotNull
-        assertThat(persisted!!.id).isNotNull
-        assertEquals(entity, persisted)
+        assertThat(persistedOrganization).isNotNull
+        assertThat(persistedOrganization!!.id).isNotNull
+        assertEquals(organizationEntity, persistedOrganization)
 
-        val persistedRepository = repositoryRepository.findByName(
-            GithubOrganizationRepositoryTestConstants.REPOSITORY_NAME
+        val persistedRepository = repositoryRepository.findByOrganizationNameAndName(
+            GithubOrganizationRepositoryTestConstants.ORGANIZATION_NAME,
+            GithubOrganizationRepositoryTestConstants.REPOSITORY_NAME,
         )
 
         assertThat(persistedRepository).isNotNull
@@ -92,8 +93,9 @@ class GithubCoreRepositoryTest(
 
         assertThat(deletedOrganization).isNull()
 
-        val deletedRepository = repositoryRepository.findByName(
-            GithubOrganizationRepositoryTestConstants.REPOSITORY_NAME
+        val deletedRepository = repositoryRepository.findByOrganizationNameAndName(
+            GithubOrganizationRepositoryTestConstants.ORGANIZATION_NAME,
+            GithubOrganizationRepositoryTestConstants.REPOSITORY_NAME,
         )
 
         assertThat(deletedRepository).isNull()

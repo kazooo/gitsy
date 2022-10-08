@@ -1,7 +1,7 @@
 package com.productboard.gitsy.core.domain.repository
 
 import com.productboard.gitsy.core.domain.organization.GithubOrganizationEntity
-import com.productboard.gitsy.language.domain.RepositoryLanguagesEntity
+import com.productboard.gitsy.language.domain.original.RepositoryLanguagesEntity
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity

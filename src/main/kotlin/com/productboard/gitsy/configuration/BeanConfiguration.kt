@@ -22,13 +22,14 @@ class BeanConfiguration(val appEnvironment: AppEnvironment) {
      * Configures and returns Spring Boot RestTemplate bean.
      */
     @Bean
-    @Profile("!test")
+    @Profile("!rest-test")
     fun restTemplate(): RestTemplate = getConfiguredTemplate()
 
     /**
      * Configures and returns GitHub REST API client bean.
      */
     @Bean
+    @Profile("!github-client-test")
     fun githubClient(restTemplate: RestTemplate): GithubClient =
         GithubClientImpl(
             appEnvironment.githubApiBaseUrlScheme,

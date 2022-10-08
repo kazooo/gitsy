@@ -16,8 +16,17 @@ interface GithubRepositoryRepository : JpaRepository<GithubRepositoryEntity, Lon
     /**
      * Searches for GitHub repository entity with the given name.
      *
+     * @param organizationName name of organization the required repository belongs to
      * @param repositoryName name of repository to find
      * @return repository entity with the given name or null if no repository found
      */
-    fun findByName(repositoryName: String): GithubRepositoryEntity?
+    fun findByOrganizationNameAndName(organizationName: String, repositoryName: String): GithubRepositoryEntity?
+
+    /**
+     * Searches for all repositories that the given organization owns.
+     *
+     * @param organizationName name of organization
+     * @return list of for all repositories that the given organization owns.
+     */
+    fun findAllByOrganizationName(organizationName: String): List<GithubRepositoryEntity>
 }

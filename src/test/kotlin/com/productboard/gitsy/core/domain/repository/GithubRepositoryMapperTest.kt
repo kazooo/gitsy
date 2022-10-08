@@ -1,5 +1,6 @@
 package com.productboard.gitsy.core.domain.repository
 
+import com.productboard.gitsy.core.domain.organization.GithubOrganizationDto
 import com.productboard.gitsy.core.domain.organization.GithubOrganizationEntity
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -22,19 +23,26 @@ class GithubRepositoryMapperTest {
             )
         )
 
-        val obj = GithubRepositoryDto(name = GithubRepositoryMapperTestConstants.REPOSITORY_NAME)
-
-        assertEquals(expected, obj.toEntity(
-            GithubOrganizationEntity(
+        val obj = GithubRepositoryDto(
+            name = GithubRepositoryMapperTestConstants.REPOSITORY_NAME,
+            organization = GithubOrganizationDto(
                 name = GithubRepositoryMapperTestConstants.ORGANIZATION_NAME,
                 publicRepos = GithubRepositoryMapperTestConstants.ORG_PUBLIC_REPOS,
             )
-        ))
+        )
+
+        assertEquals(expected, obj.toEntity())
     }
 
     @Test
     fun successfullyMapRepositoryEntityToDto() {
-        val expected = GithubRepositoryDto(name = GithubRepositoryMapperTestConstants.REPOSITORY_NAME)
+        val expected = GithubRepositoryDto(
+            name = GithubRepositoryMapperTestConstants.REPOSITORY_NAME,
+            organization = GithubOrganizationDto(
+                name = GithubRepositoryMapperTestConstants.ORGANIZATION_NAME,
+                publicRepos = GithubRepositoryMapperTestConstants.ORG_PUBLIC_REPOS,
+            )
+        )
 
         val obj = GithubRepositoryEntity(
             name = GithubRepositoryMapperTestConstants.REPOSITORY_NAME,

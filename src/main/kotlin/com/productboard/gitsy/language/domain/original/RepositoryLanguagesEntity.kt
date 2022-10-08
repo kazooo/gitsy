@@ -1,4 +1,4 @@
-package com.productboard.gitsy.language.domain
+package com.productboard.gitsy.language.domain.original
 
 import com.productboard.gitsy.core.domain.repository.GithubRepositoryEntity
 import com.vladmihalcea.hibernate.type.json.JsonType

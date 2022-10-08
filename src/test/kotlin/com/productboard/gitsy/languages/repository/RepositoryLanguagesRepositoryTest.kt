@@ -4,7 +4,7 @@ import com.productboard.gitsy.core.domain.organization.GithubOrganizationEntity
 import com.productboard.gitsy.core.domain.repository.GithubRepositoryEntity
 import com.productboard.gitsy.core.repository.GithubOrganizationRepository
 import com.productboard.gitsy.core.repository.GithubRepositoryRepository
-import com.productboard.gitsy.language.domain.RepositoryLanguagesEntity
+import com.productboard.gitsy.language.domain.original.RepositoryLanguagesEntity
 import com.productboard.gitsy.language.repository.RepositoryLanguagesRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -47,14 +47,18 @@ class RepositoryLanguagesRepositoryTest(
 
         repositoryRepository.save(repositoryEntity)
 
-        val languagesHistory = languagesRepository.findByRepositoryName(repositoryEntity.name)
+        val languagesHistory = languagesRepository.findAllByRepositoryOrganizationNameAndRepositoryName(
+            RepositoryLanguagesRepositoryTestConstants.ORGANIZATION_NAME,
+            RepositoryLanguagesRepositoryTestConstants.REPOSITORY_NAME,
+        )
 
         assertThat(languagesHistory.size == repositoryEntity.languageHistory.size)
     }
 
     @Test
     fun notFoundLanguages() {
-        val languagesHistory = languagesRepository.findByRepositoryName(
+        val languagesHistory = languagesRepository.findAllByRepositoryOrganizationNameAndRepositoryName(
+            RepositoryLanguagesRepositoryTestConstants.ORGANIZATION_NAME,
             RepositoryLanguagesRepositoryTestConstants.REPOSITORY_NAME
         )
         assertThat(languagesHistory.isEmpty())
@@ -75,7 +79,10 @@ class RepositoryLanguagesRepositoryTest(
 
         languagesRepository.deleteById(languagesHistory[0].id!!)
 
-        val modifiedLanguagesHistory = languagesRepository.findByRepositoryName(repositoryEntity.name)
+        val modifiedLanguagesHistory = languagesRepository.findAllByRepositoryOrganizationNameAndRepositoryName(
+            RepositoryLanguagesRepositoryTestConstants.ORGANIZATION_NAME,
+            RepositoryLanguagesRepositoryTestConstants.REPOSITORY_NAME
+        )
 
         assertThat(modifiedLanguagesHistory.size == languagesHistory.size - 1)
     }
@@ -89,12 +96,18 @@ class RepositoryLanguagesRepositoryTest(
         )
 
         val persistedRepository = repositoryRepository.save(repositoryEntity)
-        val languagesHistory = languagesRepository.findByRepositoryName(repositoryEntity.name)
+        val languagesHistory = languagesRepository.findAllByRepositoryOrganizationNameAndRepositoryName(
+            RepositoryLanguagesRepositoryTestConstants.ORGANIZATION_NAME,
+            RepositoryLanguagesRepositoryTestConstants.REPOSITORY_NAME
+        )
 
         assertThat(languagesHistory.size == repositoryEntity.languageHistory.size)
 
         repositoryRepository.deleteById(persistedRepository.id!!)
-        val modifiedLanguagesHistory = languagesRepository.findByRepositoryName(repositoryEntity.name)
+        val modifiedLanguagesHistory = languagesRepository.findAllByRepositoryOrganizationNameAndRepositoryName(
+            RepositoryLanguagesRepositoryTestConstants.ORGANIZATION_NAME,
+            RepositoryLanguagesRepositoryTestConstants.REPOSITORY_NAME
+        )
 
         assertThat(modifiedLanguagesHistory.isEmpty())
     }

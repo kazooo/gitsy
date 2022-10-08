@@ -8,6 +8,11 @@ package com.productboard.gitsy.core.domain.organization
  */
 data class GithubOrganizationDto(
     /**
+     * ID of persisted record
+     */
+    var id: Long? = null,
+
+    /**
      * Name of GitHub organization.
      */
     val name: String,

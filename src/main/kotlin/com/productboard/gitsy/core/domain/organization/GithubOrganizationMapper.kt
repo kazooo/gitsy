@@ -5,6 +5,7 @@ package com.productboard.gitsy.core.domain.organization
  */
 fun GithubOrganizationEntity.toDto() =
     GithubOrganizationDto(
+        id = id,
         name = name,
         publicRepos = publicRepos,
     )
@@ -14,6 +15,7 @@ fun GithubOrganizationEntity.toDto() =
  */
 fun GithubOrganizationDto.toEntity() =
     GithubOrganizationEntity(
+        id = id,
         name = name,
         publicRepos = publicRepos,
     )

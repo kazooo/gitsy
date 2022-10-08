@@ -1,5 +1,6 @@
-package com.productboard.gitsy.language.domain
+package com.productboard.gitsy.language.domain.original
 
+import com.productboard.gitsy.core.domain.repository.GithubRepositoryDto
 import org.joda.time.Instant
 
 /**
@@ -10,12 +11,22 @@ import org.joda.time.Instant
  */
 data class RepositoryLanguagesDto(
     /**
+     * ID of persisted record
+     */
+    val id: Long? = null,
+
+    /**
      * Map containing information about languages and number of bytes they take in repository.
      */
     val languageMap: Map<String, Long>,
 
     /**
+     * Repository the given language set belongs to.
+     */
+    var repository: GithubRepositoryDto? = null,
+
+    /**
      * Timestamp representing the time this record has been created.
      */
-    val createdOn: Instant,
+    var createdOn: Instant,
 )
