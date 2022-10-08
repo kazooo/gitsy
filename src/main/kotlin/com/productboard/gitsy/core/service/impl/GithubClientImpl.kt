@@ -2,8 +2,8 @@ package com.productboard.gitsy.core.service.impl
 
 import com.productboard.gitsy.core.GithubApiEndpoint
 import com.productboard.gitsy.core.buildApiUri
-import com.productboard.gitsy.core.dto.GithubOrganizationDto
-import com.productboard.gitsy.core.dto.GithubRepositoryDto
+import com.productboard.gitsy.core.domain.organization.GithubOrganizationDto
+import com.productboard.gitsy.core.domain.repository.GithubRepositoryDto
 import com.productboard.gitsy.core.service.GithubClient
 import mu.KotlinLogging
 import org.springframework.core.ParameterizedTypeReference

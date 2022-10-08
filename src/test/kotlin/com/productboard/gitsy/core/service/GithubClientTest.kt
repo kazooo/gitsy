@@ -3,8 +3,8 @@ package com.productboard.gitsy.core.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.productboard.gitsy.core.GithubApiEndpoint
 import com.productboard.gitsy.core.buildApiUri
-import com.productboard.gitsy.core.dto.GithubOrganizationDto
-import com.productboard.gitsy.core.dto.GithubRepositoryDto
+import com.productboard.gitsy.core.domain.organization.GithubOrganizationDto
+import com.productboard.gitsy.core.domain.repository.GithubRepositoryDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,12 +19,12 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers.request
 import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
 
 private object GithubClientTestConstants {
-    const val DUMMY_GITHUB_API_BASE_URL_SCHEME = "https"
-    const val DUMMY_GITHUB_API_BASE_URL = "base-api-url.com"
-    const val DUMMY_GITHUB_ORGANIZATION = "organization"
-    const val DUMMY_GITHUB_ORGANIZATION_REPOS = 42
-    const val DUMMY_GITHUB_REPOSITORY_NAME = "repository"
-    val DUMMY_REPO_LANGUAGES = mapOf("Kotlin" to 12L, "Java" to 10L)
+    const val API_BASE_URL_SCHEME = "https"
+    const val API_BASE_URL = "base-api-url.com"
+    const val ORGANIZATION = "organization"
+    const val ORGANIZATION_REPOS = 42
+    const val REPOSITORY_NAME = "repository"
+    val REPO_LANGUAGES = mapOf("Kotlin" to 12L, "Java" to 10L)
 }
 
 @RestClientTest
@@ -32,8 +32,8 @@ private object GithubClientTestConstants {
 @ComponentScan("com.productboard.*")
 @TestPropertySource(
     properties = [
-        "gitsy.githubApiBaseUrlScheme=${GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL_SCHEME}",
-        "gitsy.githubApiBaseUrl=${GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL}",
+        "gitsy.githubApiBaseUrlScheme=${GithubClientTestConstants.API_BASE_URL_SCHEME}",
+        "gitsy.githubApiBaseUrl=${GithubClientTestConstants.API_BASE_URL}",
     ]
 )
 @ActiveProfiles("test")
@@ -46,21 +46,21 @@ class GithubClientTest(
     @Test
     fun returnsOrganizationWhenSuccessful() {
         val uri = buildApiUri(
-            baseApiUrlScheme = GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL_SCHEME,
-            baseApiUrl = GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL,
+            baseApiUrlScheme = GithubClientTestConstants.API_BASE_URL_SCHEME,
+            baseApiUrl = GithubClientTestConstants.API_BASE_URL,
             relativeUrl = GithubApiEndpoint.GET_ORGANIZATION,
-            uriVariables = mapOf("organization" to GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION),
+            uriVariables = mapOf("organization" to GithubClientTestConstants.ORGANIZATION),
         )
         val expected = GithubOrganizationDto(
-            name = GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION,
-            publicRepos = GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION_REPOS,
+            name = GithubClientTestConstants.ORGANIZATION,
+            publicRepos = GithubClientTestConstants.ORGANIZATION_REPOS,
         )
 
         server
             .expect(requestTo(uri.toString()))
             .andRespond(withSuccess(mapper.writeValueAsString(expected), MediaType.APPLICATION_JSON))
 
-        val actual = githubClient.getOrganization(GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION)
+        val actual = githubClient.getOrganization(GithubClientTestConstants.ORGANIZATION)
 
         assertEquals(expected, actual)
     }
@@ -68,22 +68,22 @@ class GithubClientTest(
     @Test
     fun returnsRepositoryListWhenSuccessful() {
         val uri = buildApiUri(
-            baseApiUrlScheme = GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL_SCHEME,
-            baseApiUrl = GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL,
+            baseApiUrlScheme = GithubClientTestConstants.API_BASE_URL_SCHEME,
+            baseApiUrl = GithubClientTestConstants.API_BASE_URL,
             relativeUrl = GithubApiEndpoint.GET_ORG_REPOSITORIES,
-            uriVariables = mapOf("organization" to GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION),
+            uriVariables = mapOf("organization" to GithubClientTestConstants.ORGANIZATION),
         )
         val expected = listOf(
-            GithubRepositoryDto(name = GithubClientTestConstants.DUMMY_GITHUB_REPOSITORY_NAME),
-            GithubRepositoryDto(name = GithubClientTestConstants.DUMMY_GITHUB_REPOSITORY_NAME),
-            GithubRepositoryDto(name = GithubClientTestConstants.DUMMY_GITHUB_REPOSITORY_NAME),
+            GithubRepositoryDto(name = GithubClientTestConstants.REPOSITORY_NAME),
+            GithubRepositoryDto(name = GithubClientTestConstants.REPOSITORY_NAME),
+            GithubRepositoryDto(name = GithubClientTestConstants.REPOSITORY_NAME),
         )
 
         server
             .expect(requestTo(uri.toString()))
             .andRespond(withSuccess(mapper.writeValueAsString(expected), MediaType.APPLICATION_JSON))
 
-        val actual = githubClient.getOrganizationRepositories(GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION)
+        val actual = githubClient.getOrganizationRepositories(GithubClientTestConstants.ORGANIZATION)
 
         assertEquals(expected, actual)
     }
@@ -91,23 +91,23 @@ class GithubClientTest(
     @Test
     fun returnsRepositoryWhenSuccessful() {
         val uri = buildApiUri(
-            baseApiUrlScheme = GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL_SCHEME,
-            baseApiUrl = GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL,
+            baseApiUrlScheme = GithubClientTestConstants.API_BASE_URL_SCHEME,
+            baseApiUrl = GithubClientTestConstants.API_BASE_URL,
             relativeUrl = GithubApiEndpoint.GET_REPOSITORY,
             uriVariables = mapOf(
-                "owner" to GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION,
-                "repository" to GithubClientTestConstants.DUMMY_GITHUB_REPOSITORY_NAME,
+                "owner" to GithubClientTestConstants.ORGANIZATION,
+                "repository" to GithubClientTestConstants.REPOSITORY_NAME,
             )
         )
-        val expected = GithubRepositoryDto(name = GithubClientTestConstants.DUMMY_GITHUB_REPOSITORY_NAME)
+        val expected = GithubRepositoryDto(name = GithubClientTestConstants.REPOSITORY_NAME)
 
         server
             .expect(requestTo(uri.toString()))
             .andRespond(withSuccess(mapper.writeValueAsString(expected), MediaType.APPLICATION_JSON))
 
         val actual = githubClient.getRepository(
-            repositoryOwner = GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION,
-            repositoryName = GithubClientTestConstants.DUMMY_GITHUB_REPOSITORY_NAME,
+            repositoryOwner = GithubClientTestConstants.ORGANIZATION,
+            repositoryName = GithubClientTestConstants.REPOSITORY_NAME,
         )
 
         assertEquals(expected, actual)
@@ -116,23 +116,23 @@ class GithubClientTest(
     @Test
     fun returnsLanguagesWhenSuccessful() {
         val uri = buildApiUri(
-            baseApiUrlScheme = GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL_SCHEME,
-            baseApiUrl = GithubClientTestConstants.DUMMY_GITHUB_API_BASE_URL,
+            baseApiUrlScheme = GithubClientTestConstants.API_BASE_URL_SCHEME,
+            baseApiUrl = GithubClientTestConstants.API_BASE_URL,
             relativeUrl = GithubApiEndpoint.GET_LANGUAGES,
             uriVariables = mapOf(
-                "owner" to GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION,
-                "repository" to GithubClientTestConstants.DUMMY_GITHUB_REPOSITORY_NAME,
+                "owner" to GithubClientTestConstants.ORGANIZATION,
+                "repository" to GithubClientTestConstants.REPOSITORY_NAME,
             )
         )
-        val expected = GithubClientTestConstants.DUMMY_REPO_LANGUAGES
+        val expected = GithubClientTestConstants.REPO_LANGUAGES
 
         server
             .expect(requestTo(uri.toString()))
             .andRespond(withSuccess(mapper.writeValueAsString(expected), MediaType.APPLICATION_JSON))
 
         val actual = githubClient.getRepositoryLanguages(
-            repositoryOwner = GithubClientTestConstants.DUMMY_GITHUB_ORGANIZATION,
-            repositoryName = GithubClientTestConstants.DUMMY_GITHUB_REPOSITORY_NAME,
+            repositoryOwner = GithubClientTestConstants.ORGANIZATION,
+            repositoryName = GithubClientTestConstants.REPOSITORY_NAME,
         )
 
         assertEquals(expected, actual)

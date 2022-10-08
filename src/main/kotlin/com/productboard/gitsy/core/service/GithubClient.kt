@@ -1,7 +1,7 @@
 package com.productboard.gitsy.core.service
 
-import com.productboard.gitsy.core.dto.GithubOrganizationDto
-import com.productboard.gitsy.core.dto.GithubRepositoryDto
+import com.productboard.gitsy.core.domain.organization.GithubOrganizationDto
+import com.productboard.gitsy.core.domain.repository.GithubRepositoryDto
 
 /**
  * REST API client for GitHub REST API.
