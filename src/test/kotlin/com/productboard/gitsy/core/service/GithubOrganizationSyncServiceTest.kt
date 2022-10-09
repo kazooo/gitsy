@@ -8,7 +8,6 @@ import com.productboard.gitsy.core.domain.repository.GithubRepositoryEntity
 import com.productboard.gitsy.core.domain.repository.GithubRepositoryResponseDto
 import com.productboard.gitsy.core.repository.GithubOrganizationRepository
 import com.productboard.gitsy.core.repository.GithubRepositoryRepository
-import com.productboard.gitsy.languages.services.RepositoryLanguageSynchronizationServiceTestConstants
 import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -23,7 +22,7 @@ import org.springframework.context.annotation.FilterType
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 
-object GithubOrganizationSyncServiceTestConstants {
+private object GithubOrganizationSyncServiceTestConstants {
     const val ORGANIZATION_NAME = "organization"
     const val ORG_PUBLIC_REPOS = 42
 }
@@ -90,6 +89,7 @@ class GithubOrganizationSyncServiceTest(
             githubClient.getOrganization(GithubOrganizationSyncServiceTestConstants.ORGANIZATION_NAME)
         }.returns(
             GithubOrganizationResponseDto(
+                key = GithubOrganizationSyncServiceTestConstants.ORGANIZATION_NAME,
                 name = GithubOrganizationSyncServiceTestConstants.ORGANIZATION_NAME,
                 publicRepos = GithubOrganizationSyncServiceTestConstants.ORG_PUBLIC_REPOS,
             )
@@ -106,14 +106,14 @@ class GithubOrganizationSyncServiceTest(
 
         every {
             githubClient.getRepositoryLanguages(
-                RepositoryLanguageSynchronizationServiceTestConstants.ORGANIZATION_NAME,
+                GithubOrganizationSyncServiceTestConstants.ORGANIZATION_NAME,
                 repositoryName = "repositoryOne",
             )
         }.returns(mapOf("Kotlin" to 42L))
 
         every {
             githubClient.getRepositoryLanguages(
-                RepositoryLanguageSynchronizationServiceTestConstants.ORGANIZATION_NAME,
+                GithubOrganizationSyncServiceTestConstants.ORGANIZATION_NAME,
                 repositoryName = "repositoryTwo",
             )
         }.returns(mapOf("Java" to 42L))

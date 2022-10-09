@@ -28,6 +28,7 @@ import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators.withServerError
 import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
+import org.springframework.util.LinkedMultiValueMap
 
 private object GithubClientTestConstants {
     const val API_BASE_URL_SCHEME = "https"
@@ -79,6 +80,7 @@ class GithubClientTest(
             uriVariables = mapOf("organization" to GithubClientTestConstants.ORGANIZATION),
         )
         val expected = GithubOrganizationResponseDto(
+            key = GithubClientTestConstants.ORGANIZATION,
             name = GithubClientTestConstants.ORGANIZATION,
             publicRepos = GithubClientTestConstants.ORGANIZATION_REPOS,
         )
@@ -107,8 +109,12 @@ class GithubClientTest(
         )
 
         server
-            .expect(requestTo(uri.toString()))
+            .expect(requestTo("$uri?page=1"))
             .andRespond(withSuccess(mapper.writeValueAsString(expected), MediaType.APPLICATION_JSON))
+
+        server
+            .expect(requestTo("$uri?page=2"))
+            .andRespond(withSuccess("[]", MediaType.APPLICATION_JSON))
 
         val actual = githubClient.getOrganizationRepositories(GithubClientTestConstants.ORGANIZATION)
 
@@ -191,11 +197,14 @@ class GithubClientTest(
 
     @Test
     fun successfullyGetOrganizationRepositoriesReturnEmptyList() {
+        val queryParams = LinkedMultiValueMap<String, String>()
+        queryParams.add("page", "1")
         val uri = buildApiUri(
             baseApiUrlScheme = GithubClientTestConstants.API_BASE_URL_SCHEME,
             baseApiUrl = GithubClientTestConstants.API_BASE_URL,
             relativeUrl = GithubApiEndpoint.GET_ORG_REPOSITORIES,
             uriVariables = mapOf("organization" to GithubClientTestConstants.ORGANIZATION),
+            queryParams = queryParams,
         )
 
         server

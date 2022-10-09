@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.FilterType
 import org.springframework.test.context.ActiveProfiles
 
-object GithubOrganizationServiceTestConstants {
+private object GithubOrganizationServiceTestConstants {
     const val ORGANIZATION_NAME = "organization"
     const val ORG_PUBLIC_REPOS = 42
 }

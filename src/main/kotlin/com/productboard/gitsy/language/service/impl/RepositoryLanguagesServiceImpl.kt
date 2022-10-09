@@ -12,6 +12,8 @@ import com.productboard.gitsy.language.service.RepositoryLanguagesService
 import org.joda.time.Instant
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 /**
  * Implementation of service providing calculating operations for repository languages.
@@ -74,7 +76,7 @@ class RepositoryLanguagesServiceImpl(
         require(organizationName.isNotBlank()) { "|organizationName| can't be blank" }
 
         val repositories = repositoryService.getAllRepositories(organizationName)
-        val latestLanguageSets = repositories.map { findLatestLanguageSet(organizationName, it.name)!! }
+        val latestLanguageSets = repositories.mapNotNull { findLatestLanguageSet(organizationName, it.name) }
         if (latestLanguageSets.isEmpty()) {
             return null
         } else {
@@ -89,7 +91,7 @@ class RepositoryLanguagesServiceImpl(
 
     private fun calculatePercentage(languageMap: Map<String, Long>): Map<String, Double> {
         val totalBytes = languageMap.values.sum()
-        return languageMap.mapValues { it.value.toDouble() / totalBytes }
+        return languageMap.mapValues { (it.value.toDouble() / totalBytes).roundTo(2) }
     }
 
     private fun mergeLanguageSets(languageSetList: List<RepositoryLanguagesEntity>): CalculatedLanguageSet {
@@ -136,4 +138,9 @@ class RepositoryLanguagesServiceImpl(
         from,
         to,
     )
+
+    private fun Double.roundTo(numFractionDigits: Int): Double {
+        val factor = 10.0.pow(numFractionDigits.toDouble())
+        return (this * factor).roundToInt() / factor
+    }
 }

@@ -14,6 +14,13 @@ import javax.validation.constraints.NotBlank
 data class GithubOrganizationResponseDto(
 
     /**
+     * Key of GitHub organization. Must not be blank.
+     */
+    @JsonProperty("login")
+    @field:NotBlank
+    val key: String,
+
+    /**
      * Name of GitHub organization. Must not be blank.
      */
     @JsonProperty("name")

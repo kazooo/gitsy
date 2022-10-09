@@ -34,6 +34,7 @@ class BeanConfiguration(val appEnvironment: AppEnvironment) {
         GithubClientImpl(
             appEnvironment.githubApiBaseUrlScheme,
             appEnvironment.githubApiBaseUrl,
+            appEnvironment.authenticationBearerToken,
             restTemplate,
         )
 }

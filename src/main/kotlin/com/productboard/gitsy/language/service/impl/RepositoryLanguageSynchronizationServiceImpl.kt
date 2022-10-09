@@ -49,5 +49,6 @@ class RepositoryLanguageSynchronizationServiceImpl(
         val languagesDto = languagesResponse.toRepositoryLanguagesDto()
         languagesDto.repository = repository
         languageService.save(languagesDto)
+        logger.debug { "Finished processing language set for $repositoryName." }
     }
 }

@@ -3,7 +3,7 @@ package com.productboard.gitsy.core.domain.organization
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-object GithubOrganizationMapperTestConstants {
+private object GithubOrganizationMapperTestConstants {
     const val ORGANIZATION_NAME = "organization"
     const val ORG_PUBLIC_REPOS = 42
 }
@@ -48,6 +48,7 @@ class GithubOrganizationMapperTest {
         )
 
         val obj = GithubOrganizationResponseDto(
+            key = GithubOrganizationMapperTestConstants.ORGANIZATION_NAME,
             name = GithubOrganizationMapperTestConstants.ORGANIZATION_NAME,
             publicRepos = GithubOrganizationMapperTestConstants.ORG_PUBLIC_REPOS,
         )

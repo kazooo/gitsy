@@ -24,7 +24,7 @@ import org.springframework.context.annotation.FilterType
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 
-object RepositoryLanguageSynchronizationServiceTestConstants {
+private object RepositoryLanguageSynchronizationServiceTestConstants {
     const val ORGANIZATION_NAME = "organization"
     const val ORG_PUBLIC_REPOS = 42
     const val REPOSITORY_NAME = "repository"

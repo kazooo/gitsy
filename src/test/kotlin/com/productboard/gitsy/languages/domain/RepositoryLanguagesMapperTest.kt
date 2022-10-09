@@ -12,7 +12,7 @@ import org.joda.time.Instant
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-object RepositoryLanguagesMapperTestConstants {
+private object RepositoryLanguagesMapperTestConstants {
     const val ORGANIZATION_NAME = "organization"
     const val REPOSITORY_NAME = "repository"
     const val ORG_PUBLIC_REPOS = 42

@@ -11,6 +11,7 @@ import com.productboard.gitsy.language.service.RepositoryLanguageSynchronization
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 private val logger = KotlinLogging.logger { }
 
@@ -28,6 +29,7 @@ class GithubOrganizationSyncServiceImpl(
     @Autowired private val languageSyncService: RepositoryLanguageSynchronizationService,
 ) : GithubOrganizationSyncService {
 
+    @Transactional
     override fun synchronizeOrganization(organizationName: String) {
         require(organizationName.isNotBlank()) { "|organizationName| can't be blank" }
         logger.trace { "Synchronizing organization $organizationName..." }
@@ -43,7 +45,7 @@ class GithubOrganizationSyncServiceImpl(
 
         /* persist organization information if it doesn't exist in database */
         val organizationDto = organizationResponse.toDto()
-        var persistedOrganization = organizationService.getOrganizationByName(organizationName)
+        var persistedOrganization = organizationService.getOrganizationByName(organizationDto.name)
         /* set id of persisted record to properly compare the states of records */
         organizationDto.id = persistedOrganization?.id
         /* check persisted entity state */
@@ -71,6 +73,8 @@ class GithubOrganizationSyncServiceImpl(
         val organizationName = repository.organization!!.name
         val repositoryName = repository.name
 
+        logger.debug { "Synchronizing repository $repositoryName (owned by $organizationName)." }
+
         /* store information about repository if there is no record about it */
         var persistedRepository = repositoryService.getRepository(organizationName, repositoryName)
         /* set id of persisted record to properly compare the states of records */
@@ -87,5 +91,7 @@ class GithubOrganizationSyncServiceImpl(
         languageSyncService.synchronizeRepositoryLanguages(persistedRepository)
 
         /* you can add any additional synchronization below */
+
+        logger.debug { "Finished processing repository $repositoryName" }
     }
 }

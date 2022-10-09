@@ -29,6 +29,12 @@ class AppEnvironment {
     val githubApiBaseUrl: String = "api.github.com"
 
     /**
+     * GitHub API authentication Bearer token.
+     */
+    @Value("\${gitsy.authBearerToken}")
+    val authenticationBearerToken: String? = null
+
+    /**
      * List of GitHub organizations to periodically synchronize.
      */
     @Value("\${gitsy.synchronizeOrganizations}")
@@ -51,11 +57,26 @@ class AppEnvironment {
      */
     @PostConstruct
     fun logConfiguration() {
+        logger.info { "*********************************************************" }
         logger.info { "Application started with following environment variables:" }
         logger.info { "GitHub REST API base URL scheme: $githubApiBaseUrlScheme" }
         logger.info { "GitHub REST API base URL: $githubApiBaseUrl" }
+        logger.info { "Auth Bearer token provided: ${!authenticationBearerToken.isNullOrBlank()}" }
         logger.info { "Synchronization enabled: $synchronizationEnabled" }
         logger.info { "Organizations to synchronize: $synchronizeOrganizations" }
         logger.info { "Synchronization cron: $syncCron" }
+
+        if (authenticationBearerToken.isNullOrBlank()) {
+            logger.warn { "" }
+            logger.warn {
+                "No authentication token provided, " +
+                    "this may lead to limited application performance due to GitHub API rate limits!"
+            }
+            logger.warn {
+                "Please provide authentication token to use the application without limitations."
+            }
+        }
+
+        logger.info { "*********************************************************" }
     }
 }

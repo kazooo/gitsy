@@ -7,6 +7,7 @@ services:
     environment:
       - GITHUB_API_BASE_URL_SCHEME=https
       - GITHUB_API_BASE_URL=api.github.com
+      - GITHUB_BEARER_TOKEN=<secret_auth_token>
       - SYNC_ORGS=productboard
       - ENABLE_SYNC=false
       - ORG_SYNC_CRON=0 0 12 1 * *

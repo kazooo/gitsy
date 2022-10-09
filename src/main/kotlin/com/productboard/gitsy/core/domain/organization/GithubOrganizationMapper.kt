@@ -25,6 +25,6 @@ fun GithubOrganizationDto.toEntity() =
  */
 fun GithubOrganizationResponseDto.toDto() =
     GithubOrganizationDto(
-        name = name,
+        name = key, /* persist key at the moment */
         publicRepos = publicRepos,
     )

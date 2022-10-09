@@ -14,6 +14,8 @@ import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
 import org.springframework.http.client.support.HttpRequestWrapper
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.util.LinkedMultiValueMap
+import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 import org.springframework.web.util.UriTemplate
@@ -30,6 +32,7 @@ import javax.validation.Validation
  * @param baseApiUrl       base API URL
  * @param relativeUrl      relative URL
  * @param uriVariables     URI template variables to replace
+ * @param queryParams      URI query parameters
  * @return configured URI
  */
 fun buildApiUri(
@@ -37,6 +40,7 @@ fun buildApiUri(
     baseApiUrl: String,
     relativeUrl: String,
     uriVariables: Map<String, Any>,
+    queryParams: MultiValueMap<String, String> = LinkedMultiValueMap(),
 ): URI {
     require(baseApiUrlScheme.isNotBlank()) { "|baseApiUrlScheme| can't be empty or blank" }
     require(baseApiUrl.isNotBlank()) { "|baseApiUrl| can't be empty or blank" }
@@ -46,6 +50,7 @@ fun buildApiUri(
         .scheme(baseApiUrlScheme)
         .host(baseApiUrl)
         .path(relativeUrl)
+        .queryParams(queryParams)
         .build()
         .toString()
     val uriTemplate = UriTemplate(url)
