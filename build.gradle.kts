@@ -38,8 +38,6 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
     implementation("org.springdoc:springdoc-openapi-kotlin:1.6.11")
 
-    implementation("org.liquibase:liquibase-core")
-
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("com.h2database:h2:2.1.214")
 
