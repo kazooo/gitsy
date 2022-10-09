@@ -149,3 +149,12 @@ tasks.withType<Detekt>().configureEach {
         }
     }
 }
+
+tasks.koverVerify {
+    rule {
+        name = "Minimal line coverage rate in percents"
+        bound {
+            minValue = 80
+        }
+    }
+}
