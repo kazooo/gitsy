@@ -34,6 +34,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.0")
 
+    implementation("org.springdoc:springdoc-openapi-data-rest:1.6.11")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.11")
+
     implementation("org.liquibase:liquibase-core")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")

@@ -9,6 +9,7 @@ import com.productboard.gitsy.core.domain.repository.GithubRepositoryResponseDto
 import com.productboard.gitsy.core.service.GithubOrganizationService
 import com.productboard.gitsy.core.service.GithubOrganizationSyncService
 import com.productboard.gitsy.core.service.GithubRepositoryService
+import com.productboard.gitsy.language.rest.LanguageRest
 import com.productboard.gitsy.language.service.RepositoryLanguageSynchronizationService
 import com.productboard.gitsy.language.service.RepositoryLanguagesService
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -51,6 +52,7 @@ private object GithubClientTestConstants {
                 GithubOrganizationService::class,
                 RepositoryLanguageSynchronizationService::class,
                 RepositoryLanguagesService::class,
+                LanguageRest::class,
             ]
         ),
     ],
