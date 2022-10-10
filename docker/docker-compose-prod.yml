@@ -10,12 +10,12 @@ services:
       - GITHUB_BEARER_TOKEN=<secret_auth_token>
       - SYNC_ORGS=productboard
       - ENABLE_SYNC=false
-      - ORG_SYNC_CRON=0 0 12 1 * *
+      - ORG_SYNC_CRON=0 0 6 * * *
       - POSTGRES_SRC_URL=jdbc:postgresql://postgres:5432/gitsy
       - POSTGRES_USER=postgres
       - POSTGRES_PSWD=postgres
       - SPRING_PROFILES_ACTIVE=prod
-      - APP_LOGGING_LEVEL=WARN
+      - APP_LOGGING_LEVEL=INFO
       - SERVER_PORT=8080
     ports:
       - "8080:8080"
